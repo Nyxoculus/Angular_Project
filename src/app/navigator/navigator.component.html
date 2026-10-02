@@ -1,0 +1,70 @@
+@for (task of tasks; track task; let index = $index) {
+  @if (index + 1 === currentIndex) {
+    <app-task-selector
+      [index]="index"
+      [ATask]="tasks[index].A"
+      [BTask]="tasks[index].B"
+      [selectedTask]="selectedTask"
+      (taskSelected)="selectTask($event)"
+    >
+      <!-- Solution -->
+      @if (selectedTask) {
+        <ng-template #navigatorTitleTemplate>
+          <span style="font-size: 20px; margin-bottom: 20px">
+            {{ currentIndex }}. {{ selectedTask }} feladat megoldása
+          </span>
+        </ng-template>
+        <ng-template #navigatorCoverTemplate>
+          <div style="padding: 10px">
+            @switch (currentIndex) {
+              @case (1) {
+                @switch (selectedTask) {
+                  @case ('A') {
+                    <app-task1-a></app-task1-a>
+                  }
+                  @case ('B') {
+                    <app-task1-b></app-task1-b>
+                  }
+                  @default {
+                    <ng-container
+                      >Ha ezt a szöveget látod, akkor valamit elrontottam.
+                      :(</ng-container
+                    >
+                  }
+                }
+              }
+              @case (2) {
+                @switch (selectedTask) {
+                  @case ('A') {
+                    <app-task2-a></app-task2-a>
+                  }
+                  @case ('B') {
+                    <app-task2-b></app-task2-b>
+                  }
+                  @default {
+                    <ng-container
+                      >Ha ezt a szöveget látod, akkor valamit elrontottam.
+                      :(</ng-container
+                    >
+                  }
+                }
+              }
+            }
+          </div>
+        </ng-template>
+        <ng-template #navigatorFooterTemplate>
+          <div class="text-center">
+            <button nz-button (click)="selectTask(undefined)">Vissza</button>
+            <button nz-button (click)="nextTask()">Tovább</button>
+          </div>
+        </ng-template>
+        <nz-card
+          [nzTitle]="navigatorTitleTemplate"
+          [nzCover]="navigatorCoverTemplate"
+          [nzActions]="[navigatorFooterTemplate]"
+        >
+        </nz-card>
+      }
+    </app-task-selector>
+  }
+}

@@ -1,0 +1,121 @@
+<div class="log-analyzer">
+  <h3>Naplóelemző</h3>
+
+  <form nz-form [formGroup]="form" class="filter-form" nzLayout="inline">
+    <nz-form-item>
+      <nz-form-label>Súlyosság</nz-form-label>
+      <nz-form-control>
+        <nz-select
+          class="multi"
+          nzMode="multiple"
+          nzPlaceHolder="Összes"
+          formControlName="severities"
+        >
+          @for (s of severities; track s) {
+            <nz-option [nzValue]="s" [nzLabel]="s"></nz-option>
+          }
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label>Felhasználó</nz-form-label>
+      <nz-form-control>
+        <nz-select
+          class="multi"
+          nzMode="multiple"
+          nzPlaceHolder="Összes"
+          nzAllowClear
+          formControlName="users"
+        >
+          @for (u of users(); track u) {
+            <nz-option [nzValue]="u" [nzLabel]="u"></nz-option>
+          }
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label>Kezdő dátum</nz-form-label>
+      <nz-form-control>
+        <nz-date-picker formControlName="startDate"></nz-date-picker>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label>Vég dátum</nz-form-label>
+      <nz-form-control
+        [nzErrorTip]="'A kezdő dátum nem lehet későbbi a vég dátumnál.'"
+        [nzValidateStatus]="form.hasError('dateRange') ? 'error' : ''"
+      >
+        <nz-date-picker formControlName="endDate"></nz-date-picker>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <button nz-button (click)="resetFilters()" type="button">
+        Szűrők törlése
+      </button>
+    </nz-form-item>
+  </form>
+
+  @if (form.hasError('dateRange')) {
+    <div class="form-error">
+      A kezdő dátum nem lehet későbbi a vég dátumnál.
+    </div>
+  }
+
+  <div class="stats-cards">
+    <nz-card class="stat" nzTitle="Bejegyzések">
+      <div class="stat-value">{{ stats()?.total ?? 0 }}</div>
+    </nz-card>
+    <nz-card class="stat" nzTitle="Hibák">
+      <div class="stat-value error">{{ stats()?.errors ?? 0 }}</div>
+    </nz-card>
+    <nz-card class="stat" nzTitle="Figyelmeztetések">
+      <div class="stat-value warning">{{ stats()?.warnings ?? 0 }}</div>
+    </nz-card>
+    <nz-card class="stat" nzTitle="Leggyakoribb felhasználó">
+      <div class="stat-value">{{ stats()?.topUser ?? '—' }}</div>
+    </nz-card>
+  </div>
+
+  <nz-card class="chart-card" nzTitle="Napi eloszlás">
+    <canvas #barCanvas></canvas>
+  </nz-card>
+
+  <nz-table
+    #logTable
+    [nzData]="filtered()"
+    [nzVirtualItemSize]="40"
+    [nzScroll]="{ y: '400px' }"
+    [nzLoading]="loading()"
+    [nzFrontPagination]="false"
+    [nzShowPagination]="false"
+  >
+    <thead>
+      <tr>
+        <th nzWidth="160px">Időpont</th>
+        <th nzWidth="120px">Súlyosság</th>
+        <th nzWidth="160px">Felhasználó</th>
+        <th nzWidth="180px">Típus</th>
+        <th>Üzenet</th>
+      </tr>
+    </thead>
+    <tbody>
+      <ng-template nz-virtual-scroll let-entry>
+        <tr>
+          <td>{{ entry.timestamp }}</td>
+          <td>
+            <span class="badge" [class]="entry.severity">{{
+              entry.severity
+            }}</span>
+          </td>
+          <td>{{ entry.user }}</td>
+          <td>{{ entry.type }}</td>
+          <td>{{ entry.message }}</td>
+        </tr>
+      </ng-template>
+    </tbody>
+  </nz-table>
+</div>

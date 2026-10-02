@@ -1,0 +1,15 @@
+= Choose your own complex beadando
+
+== Feladatok
+
+=== Task 1
+
+==== A - Quest Log
+
+==== B - Inventory management
+
+=== Task 2
+
+==== A - Log Analyzer
+
+==== B - Text Analyzer

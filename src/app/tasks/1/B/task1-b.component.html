@@ -1,0 +1,89 @@
+<div class="inventory-task">
+  <div class="left">
+    <div #konvaContainer class="konva-container"></div>
+
+    @if (hasSelection()) {
+      <button nz-button nzDanger nzType="primary" class="drop-btn" (click)="dropSelected()">
+        Kiválasztott tárgy eldobása
+      </button>
+    }
+    <p class="hint">
+      Tipp: kattints egy tárgyra a kijelöléshez, mozgasd a nyilakkal vagy
+      húzd át az egérrel.
+    </p>
+  </div>
+
+  <div class="right">
+    <nz-tabs>
+      <nz-tab nzTitle="Fegyverek">
+        @if (weaponsInShop().length === 0) {
+          <p class="empty">Minden fegyvert megvásároltál.</p>
+        }
+        @for (w of weaponsInShop(); track w.id) {
+          <div class="product">
+            <span class="swatch" [style.background]="w.color"></span>
+            <div class="info">
+              <div class="name">{{ w.name }}</div>
+              <div class="meta">Méret: {{ w.w }}x{{ w.h }} · Ár: {{ w.price }}</div>
+            </div>
+            <span nz-tooltip [nzTooltipTitle]="weaponTooltip(w)">
+              <button
+                nz-button
+                nzType="primary"
+                [disabled]="!canBuyWeapon(w)"
+                (click)="buyWeapon(w)"
+              >
+                Vásárlás
+              </button>
+            </span>
+          </div>
+        }
+      </nz-tab>
+
+      <nz-tab nzTitle="Töltény">
+        @for (a of ammo; track a.id) {
+          <div class="product">
+            <span class="swatch" [style.background]="a.color"></span>
+            <div class="info">
+              <div class="name">{{ a.name }}</div>
+              <div class="meta">Méret: 1x1 · Ár: {{ a.price }}</div>
+            </div>
+            <span nz-tooltip [nzTooltipTitle]="ammoTooltip(a)">
+              <button
+                nz-button
+                nzType="primary"
+                [disabled]="!canBuyAmmo(a)"
+                (click)="buyAmmo(a)"
+              >
+                Vásárlás
+              </button>
+            </span>
+          </div>
+        }
+      </nz-tab>
+
+      <nz-tab nzTitle="Fejlesztések">
+        <div class="product">
+          <span class="swatch" style="background: #722ed1"></span>
+          <div class="info">
+            <div class="name">Eszköztár bővítése</div>
+            <div class="meta">
+              +2 négyzet · Ár: {{ expansionPrice }} ·
+              {{ expansionsBought() }}/{{ maxExpansions }} felhasználva
+            </div>
+          </div>
+          <span nz-tooltip [nzTooltipTitle]="expansionTooltip()">
+            <button
+              nz-button
+              nzType="primary"
+              [disabled]="!canBuyExpansion()"
+              (click)="buyExpansion()"
+            >
+              Vásárlás
+            </button>
+          </span>
+        </div>
+      </nz-tab>
+    </nz-tabs>
+  </div>
+</div>

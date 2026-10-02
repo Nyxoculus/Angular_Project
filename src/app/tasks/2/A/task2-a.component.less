@@ -1,0 +1,69 @@
+.log-analyzer {
+  h3 {
+    margin-bottom: 16px;
+  }
+
+  .filter-form {
+    margin-bottom: 8px;
+
+    .multi {
+      min-width: 180px;
+    }
+  }
+
+  .form-error {
+    color: #ff4d4f;
+    margin-bottom: 12px;
+  }
+
+  .stats-cards {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin: 16px 0;
+
+    .stat {
+      flex: 1;
+      min-width: 160px;
+
+      .stat-value {
+        font-size: 24px;
+        font-weight: 600;
+
+        &.error {
+          color: #ff4d4f;
+        }
+
+        &.warning {
+          color: #faad14;
+        }
+      }
+    }
+  }
+
+  .chart-card {
+    margin-bottom: 16px;
+  }
+
+  .badge {
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    text-transform: uppercase;
+
+    &.info {
+      background: #e6f4ff;
+      color: #1677ff;
+    }
+
+    &.warning {
+      background: #fffbe6;
+      color: #faad14;
+    }
+
+    &.error {
+      background: #fff1f0;
+      color: #ff4d4f;
+    }
+  }
+}
